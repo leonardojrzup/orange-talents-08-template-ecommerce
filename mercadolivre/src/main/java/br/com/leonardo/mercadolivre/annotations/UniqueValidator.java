@@ -17,17 +17,17 @@ public class UniqueValidator implements ConstraintValidator <Unique, Object>{
     @PersistenceContext
     EntityManager entityManager;
 
+    //inicialização
     @Override
     public void initialize(Unique params) {
         campo = params.fieldName();
         classe = params.domainClass();
     }
+    //validação
     @Override
     public boolean isValid(Object value, ConstraintValidatorContext context) {
-
         Query query = entityManager.createQuery("Select 1 From " + classe.getName() +" WHERE "+ campo +"=:value" );
         query.setParameter("value", value);
-        System.out.println(query);
         List<?> list = query.getResultList();
         return list.isEmpty();
     }

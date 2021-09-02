@@ -17,12 +17,8 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Constraint(validatedBy = UniqueValidator.class)
 @Documented
 public @interface Unique {
-
-
     String message() default "Ja existe um campo com o mesmo valor inserido no banco de dados";
-
     Class<?>[] groups() default {};
-
     Class<? extends Payload>[] payload() default {};
 
     //valor padrão caso não for passado nenhum valor na variavel
