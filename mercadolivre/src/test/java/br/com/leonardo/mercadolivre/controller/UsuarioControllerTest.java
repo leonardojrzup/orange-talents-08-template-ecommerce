@@ -107,8 +107,6 @@ public class UsuarioControllerTest {
 
       //  assertNotNull(resultado);
         //assertNull(resultado);
-
-
     }
 
     // Se o usuario ja existir no banco deve retornar 400
@@ -123,12 +121,6 @@ public class UsuarioControllerTest {
                 .content(gson.toJson(form))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)).andExpect(status().isBadRequest());
-
-
-
-
-
-
     }
 
 
