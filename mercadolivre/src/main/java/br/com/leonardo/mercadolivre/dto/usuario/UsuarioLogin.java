@@ -1,7 +1,7 @@
 package br.com.leonardo.mercadolivre.dto.usuario;
 
-import br.com.leonardo.mercadolivre.model.Usuario;
 import br.com.leonardo.mercadolivre.annotations.Unique;
+import br.com.leonardo.mercadolivre.model.Usuario;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
@@ -10,12 +10,12 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-public class UsuarioForm {
+public class UsuarioLogin {
+
 
     @NotNull(message = "Login")
     @NotBlank(message = "Login")
     @Email(message = "Login")
-    @Unique(fieldName = "login", domainClass = Usuario.class, message = "login já cadastrado no banco de dados")
     private String login;
 
     @Length(min = 6,message = "Senha")
@@ -24,15 +24,14 @@ public class UsuarioForm {
     private String senha;
 
 
-    public UsuarioForm(@Email @NotBlank String login,
+    public UsuarioLogin(@Email @NotBlank String login,
                        @NotBlank  @Min(value = 6)String senha) {
         this.login = login;
         this.senha = senha;
     }
 
-    public UsuarioForm(){
+    public UsuarioLogin(){
     }
-
 
     public String getLogin() {
         return login;
@@ -47,7 +46,9 @@ public class UsuarioForm {
     }
 
     public UsernamePasswordAuthenticationToken toAuthenticationToken() {
-     return new UsernamePasswordAuthenticationToken(login,senha);
+        return new UsernamePasswordAuthenticationToken(login,senha);
 
     }
+
+
 }
