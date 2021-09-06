@@ -36,7 +36,7 @@ public class Produto {
     @Length(max = 1000)
     private  String descricao;
 
-    @NotNull
+    @NotNull(message = "Categoria")
     @Valid
     @ManyToOne
     private Categoria categoria;

@@ -23,23 +23,15 @@ public class ProdutoController {
     private CategoriaRepository categoriaRepository;
 
     @Autowired
-    private CaracteristicaRepository caracteristicaRepository;
-
-    @Autowired
     private ProdutoRepository produtoRepository;
 
     @PostMapping
     @Transactional
     public ProdutoDTO Salvar(@RequestBody @Valid ProdutoForm request) {
-
-        System.out.println(request.getNome());
         Produto produto = request.toModel(categoriaRepository);
         produtoRepository.save(produto);
-
         return new ProdutoDTO(produto.getId(), produto.getNome(), produto.getValor(), produto.getQuantidade(),
                 produto.getDescricao(), produto.getCategoria(), produto.getCaracteristicas(), produto.getDataCadastro());
-
-
     }
 
 }
