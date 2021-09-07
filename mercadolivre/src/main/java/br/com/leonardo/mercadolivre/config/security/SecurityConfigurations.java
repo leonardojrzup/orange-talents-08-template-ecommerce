@@ -45,10 +45,7 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
         //  http.csrf().disable();
 
         http.authorizeRequests()
-                .antMatchers(HttpMethod.GET, "/categorias").permitAll()
-                .antMatchers(HttpMethod.GET, "/categorias/*").permitAll()
                 .antMatchers(HttpMethod.POST, "/auth").permitAll()
-                .antMatchers(HttpMethod.GET, "/produtos").permitAll()
                 .antMatchers(HttpMethod.POST, "/usuarios").permitAll() // permitir que eu possa cadastrar um usuario para realizar a autenticação depois, banco H
                 .anyRequest().authenticated()
                 .and().csrf().disable()

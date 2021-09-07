@@ -32,13 +32,8 @@ public class ProdutoController {
     @Autowired
     private ProdutoRepository produtoRepository;
 
-@GetMapping
-    public List<Produto> Listar(){
-    return (List<Produto>) produtoRepository.findAll();
-}
 
     @PostMapping
-
     public ProdutoDTO Salvar(@RequestBody @Valid ProdutoForm request) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Usuario logado = (Usuario) authentication.getPrincipal();
