@@ -48,15 +48,24 @@ public class Produto {
     @OneToMany(cascade = CascadeType.PERSIST)
     private List<Caracteristica> caracteristicas = new ArrayList<Caracteristica>();
 
+    @ManyToOne
+    private Usuario vendedor;
 
-    public Produto( String nome, BigDecimal valor, int quantidade, String descricao, Categoria categoria, List<CaracteristicaForm> caracteristicas) {
+
+    @OneToMany(cascade = CascadeType.PERSIST)
+    private List<FotosProdutos> fotos = new ArrayList<FotosProdutos>();
+
+
+
+
+    public Produto( String nome, BigDecimal valor, int quantidade, String descricao, Categoria categoria, List<CaracteristicaForm> caracteristicas, Usuario usuario) {
         this.nome = nome;
         this.valor = valor;
         this.quantidade = quantidade;
         this.descricao = descricao;
         this.categoria = categoria;
         this.dataCadastro = LocalDateTime.now();
-
+        this.vendedor = usuario;
         this.caracteristicas.addAll(caracteristicas.stream()
                 .map(caracteristica -> caracteristica.toModel())
                 .collect(Collectors.toSet()));
@@ -101,4 +110,8 @@ public class Produto {
     public List<Caracteristica> getCaracteristicas() {
         return caracteristicas;
     }
+
+    public boolean pertenceAoUsuario(Usuario logado) {
+            return this.vendedor.equals(logado);
+        }
 }

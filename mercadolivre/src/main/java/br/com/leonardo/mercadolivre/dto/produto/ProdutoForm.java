@@ -8,6 +8,7 @@ import br.com.leonardo.mercadolivre.dto.caracteristica.CaracteristicaForm;
 import br.com.leonardo.mercadolivre.model.Caracteristica;
 import br.com.leonardo.mercadolivre.model.Categoria;
 import br.com.leonardo.mercadolivre.model.Produto;
+import br.com.leonardo.mercadolivre.model.Usuario;
 import br.com.leonardo.mercadolivre.repository.CategoriaRepository;
 import org.hibernate.validator.constraints.Length;
 
@@ -48,11 +49,11 @@ public class ProdutoForm {
 
 
 
-    public Produto toModel(CategoriaRepository categoriaRepository) {
+    public Produto toModel(CategoriaRepository categoriaRepository, Usuario user) {
         Categoria categoria = categoriaRepository.findById(idCategoria).orElseThrow();
 
 
-        return new Produto(nome, valor, quantidade, descricao, categoria,caracteristicas);
+        return new Produto(nome, valor, quantidade, descricao, categoria,caracteristicas, user);
     }
 
 
