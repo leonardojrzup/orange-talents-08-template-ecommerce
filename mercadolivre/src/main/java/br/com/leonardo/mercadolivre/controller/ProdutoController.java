@@ -32,32 +32,30 @@ public class ProdutoController {
     @PostMapping
     @Transactional
     public ProdutoDTO Salvar(@RequestBody @Valid ProdutoForm request) {
-        Produto produto = request.toModel(categoriaRepository);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Usuario logado = (Usuario) authentication.getPrincipal();
+        Produto produto = request.toModel(categoriaRepository, logado);
         produtoRepository.save(produto);
         return new ProdutoDTO(produto.getId(), produto.getNome(), produto.getValor(), produto.getQuantidade(),
                 produto.getDescricao(), produto.getCategoria(), produto.getCaracteristicas(), produto.getDataCadastro());
     }
 
 
-
     @PostMapping
     @RequestMapping("/{id}/imagens")
     @ResponseStatus(HttpStatus.OK)
-    public void adicionarImagens(@PathVariable("id") Long id, @Valid FotosProdutosForm form){
+    public void adicionarImagens(@PathVariable("id") Long id, @Valid FotosProdutosForm form) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Usuario logado = (Usuario) authentication.getPrincipal();
         Produto produto = produtoRepository.findById(id).orElseThrow();
 
-        if(!produto.pertenceAoUsuario(logado))
+        if (!produto.pertenceAoUsuario(logado)) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN);
 
-        produto.associaImagens(links);
-        produtoRepository.save(produto);
+        } else {
+            produto.adicionarImagens(form);
+            produtoRepository.save(produto);
+        }
 
     }
-
-    }
-
-    }
-
 }

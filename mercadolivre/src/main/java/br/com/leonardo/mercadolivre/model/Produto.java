@@ -1,5 +1,6 @@
 package br.com.leonardo.mercadolivre.model;
 
+import br.com.leonardo.mercadolivre.dto.FotosProdutos.FotosProdutosForm;
 import br.com.leonardo.mercadolivre.dto.caracteristica.CaracteristicaForm;
 import org.hibernate.validator.constraints.Length;
 
@@ -114,4 +115,12 @@ public class Produto {
     public boolean pertenceAoUsuario(Usuario logado) {
             return this.vendedor.equals(logado);
         }
+
+    public void adicionarImagens(FotosProdutosForm form) {
+        List<FotosProdutos> imagens = form.getLinks().stream()
+                .map(link -> new FotosProdutos(link))
+                .collect(Collectors.toList());
+        this.fotos.addAll(imagens);
+
+    }
 }

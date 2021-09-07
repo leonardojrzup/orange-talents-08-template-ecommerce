@@ -16,4 +16,10 @@ public class FotosProdutosForm {
     public List<String> getLinks() {
         return links;
     }
+
+    public void toModel() {
+
+
+
+    }
 }
