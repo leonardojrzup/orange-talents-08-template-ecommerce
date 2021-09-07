@@ -9,6 +9,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
+import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -42,18 +43,20 @@ public class Produto {
     @ManyToOne
     private Categoria categoria;
 
-    @NotNull
+    @NotNull(message = "Data de cadastro")
     private LocalDateTime dataCadastro;
 
-
+    @Size(min = 3)
+    @NotNull(message = "Caracteristicas")
     @OneToMany(cascade = CascadeType.PERSIST)
     private List<Caracteristica> caracteristicas = new ArrayList<Caracteristica>();
 
     @ManyToOne
+    @NotNull (message = "Vendedor")
     private Usuario vendedor;
 
 
-    @OneToMany(cascade = CascadeType.PERSIST)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<FotosProdutos> fotos = new ArrayList<FotosProdutos>();
 
 
@@ -103,7 +106,6 @@ public class Produto {
         return categoria;
     }
 
-
     public LocalDateTime getDataCadastro() {
         return dataCadastro;
     }
@@ -112,15 +114,22 @@ public class Produto {
         return caracteristicas;
     }
 
+    public Usuario getVendedor() {
+        return vendedor;
+    }
+
+    public List<FotosProdutos> getFotos() {
+        return fotos;
+    }
+
     public boolean pertenceAoUsuario(Usuario logado) {
-            return this.vendedor.equals(logado);
+            return this.vendedor.getId().equals(logado.getId());
         }
 
-    public void adicionarImagens(FotosProdutosForm form) {
-        List<FotosProdutos> imagens = form.getLinks().stream()
-                .map(link -> new FotosProdutos(link))
-                .collect(Collectors.toList());
-        this.fotos.addAll(imagens);
-
+    public void adicionarImagens(List<FotosProdutos> imagens) { imagens.forEach(imagem -> {
+        if (!this.fotos.contains(imagem)) {
+            this.fotos.add(imagem);
+        }
+    });
     }
 }

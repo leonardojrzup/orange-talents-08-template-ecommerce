@@ -7,6 +7,7 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 public class FotosProdutos {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -14,6 +15,10 @@ public class FotosProdutos {
     @NotNull(message = "Link")
     private String link;
 
+    @Deprecated
+    public FotosProdutos() {
+
+    }
 
     public FotosProdutos(String link) {
         this.link = link;

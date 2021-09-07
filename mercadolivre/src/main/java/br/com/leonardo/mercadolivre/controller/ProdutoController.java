@@ -13,10 +13,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 @RestController
@@ -29,8 +32,13 @@ public class ProdutoController {
     @Autowired
     private ProdutoRepository produtoRepository;
 
+@GetMapping
+    public List<Produto> Listar(){
+    return (List<Produto>) produtoRepository.findAll();
+}
+
     @PostMapping
-    @Transactional
+
     public ProdutoDTO Salvar(@RequestBody @Valid ProdutoForm request) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Usuario logado = (Usuario) authentication.getPrincipal();
@@ -43,17 +51,14 @@ public class ProdutoController {
 
     @PostMapping
     @RequestMapping("/{id}/imagens")
-    @ResponseStatus(HttpStatus.OK)
     public void adicionarImagens(@PathVariable("id") Long id, @Valid FotosProdutosForm form) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Usuario logado = (Usuario) authentication.getPrincipal();
         Produto produto = produtoRepository.findById(id).orElseThrow();
-
         if (!produto.pertenceAoUsuario(logado)) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
-
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN,"Esse produto não pertece a esse usuario");
         } else {
-            produto.adicionarImagens(form);
+            produto.adicionarImagens(form.toModel());
             produtoRepository.save(produto);
         }
 

@@ -48,8 +48,8 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/categorias").permitAll()
                 .antMatchers(HttpMethod.GET, "/categorias/*").permitAll()
                 .antMatchers(HttpMethod.POST, "/auth").permitAll()
-                .antMatchers(HttpMethod.POST, "/usuarios").permitAll() // permitir que eu possa cadastrar um usuario para realizar a autenticação depois, banco H2
-                .antMatchers(HttpMethod.POST, "/produtos").permitAll()
+                .antMatchers(HttpMethod.GET, "/produtos").permitAll()
+                .antMatchers(HttpMethod.POST, "/usuarios").permitAll() // permitir que eu possa cadastrar um usuario para realizar a autenticação depois, banco H
                 .anyRequest().authenticated()
                 .and().csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // nao criar sessao
