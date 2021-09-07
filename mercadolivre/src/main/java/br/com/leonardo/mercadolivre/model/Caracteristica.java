@@ -22,6 +22,10 @@ public class Caracteristica {
         this.descricao = descricao;
     }
 
+    public Caracteristica() {
+
+    }
+
     public Long getId() {
         return id;
     }

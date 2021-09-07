@@ -55,12 +55,8 @@ public class Produto {
     @NotNull (message = "Vendedor")
     private Usuario vendedor;
 
-
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<FotosProdutos> fotos = new ArrayList<FotosProdutos>();
-
-
-
 
     public Produto( String nome, BigDecimal valor, int quantidade, String descricao, Categoria categoria, List<CaracteristicaForm> caracteristicas, Usuario usuario) {
         this.nome = nome;

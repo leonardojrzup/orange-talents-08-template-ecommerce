@@ -11,6 +11,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import javax.validation.ConstraintViolationException;
@@ -43,6 +44,14 @@ public class TratamentoDeExcecao extends ResponseEntityExceptionHandler {
     //Tratar IllegalStateException
     @ExceptionHandler(IllegalStateException.class)
     public ResponseEntity<Object> handleRegraNegocioException(IllegalStateException ex, WebRequest request) {
+        String msgUsuario = ex.getMessage();
+        String msgDesenvolvedor = ex.getMessage();
+        List<Erro> erros = Arrays.asList(new Erro(msgUsuario, msgDesenvolvedor));
+        return handleExceptionInternal(ex, erros, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+    }
+
+    @ExceptionHandler(ResponseStatusException.class)
+    public ResponseEntity<Object> handleResponseStatusException(IllegalStateException ex, WebRequest request) {
         String msgUsuario = ex.getMessage();
         String msgDesenvolvedor = ex.getMessage();
         List<Erro> erros = Arrays.asList(new Erro(msgUsuario, msgDesenvolvedor));
