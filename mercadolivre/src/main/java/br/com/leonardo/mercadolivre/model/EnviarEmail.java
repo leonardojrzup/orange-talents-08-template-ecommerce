@@ -1,8 +1,8 @@
 package br.com.leonardo.mercadolivre.model;
 
-class EnviarEmail {
+public class EnviarEmail {
 
-    public void enviarEmailNovaPergunta(Usuario vendedor, Usuario comprador,Produto produto){
+    public static void enviarEmailNovaPergunta(Usuario vendedor, Usuario comprador,Produto produto){
 
         System.out.println("---------------------------------Email---------------------------------------");
         System.out.println("De: " + comprador.getLogin().toString());
