@@ -61,6 +61,9 @@ public class Produto {
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Opiniao> opinioes;
 
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Pergunta> perguntas;
+
 
     public Produto( String nome, BigDecimal valor, int quantidade, String descricao, Categoria categoria, List<CaracteristicaForm> caracteristicas, Usuario usuario) {
         this.nome = nome;
@@ -138,6 +141,11 @@ public class Produto {
 
     public void adicionarOpiniao(Opiniao opiniao){
     this.opinioes.add(opiniao);
+
+    }
+
+    public void adicionarPerguntas(Pergunta pergunta){
+        this.perguntas.add(pergunta);
 
     }
 

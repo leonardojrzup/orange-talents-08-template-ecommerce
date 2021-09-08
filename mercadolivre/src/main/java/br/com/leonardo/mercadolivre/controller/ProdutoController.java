@@ -1,6 +1,7 @@
 package br.com.leonardo.mercadolivre.controller;
 
 import br.com.leonardo.mercadolivre.dto.FotosProdutos.FotosProdutosForm;
+import br.com.leonardo.mercadolivre.dto.PerguntaForm;
 import br.com.leonardo.mercadolivre.dto.opiniao.OpiniaoForm;
 import br.com.leonardo.mercadolivre.dto.produto.ProdutoDTO;
 import br.com.leonardo.mercadolivre.dto.produto.ProdutoForm;
@@ -52,12 +53,11 @@ public class ProdutoController {
         Usuario logado = (Usuario) authentication.getPrincipal();
         Produto produto = produtoRepository.findById(id).orElseThrow();
         if (!produto.pertenceAoUsuario(logado)) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN,"Esse produto não pertece a esse usuario");
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Esse produto não pertece a esse usuario");
         } else {
             produto.adicionarImagens(form.toModel());
             produtoRepository.save(produto);
         }
-
     }
 
     @PostMapping
@@ -66,9 +66,20 @@ public class ProdutoController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Usuario logado = (Usuario) authentication.getPrincipal();
         Produto produto = produtoRepository.findById(id).orElseThrow();
-        produto.adicionarOpiniao(form.toModel(id,produtoRepository,logado));
+        produto.adicionarOpiniao(form.toModel(id, produtoRepository, logado));
         produtoRepository.save(produto);
-        }
+    }
+
+    @PostMapping
+    @RequestMapping("/{id}/perguntas")
+    public void adicionarPerguntas(@PathVariable("id") Long id, @RequestBody @Valid PerguntaForm form) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Usuario logado = (Usuario) authentication.getPrincipal();
+        Produto produto = produtoRepository.findById(id).orElseThrow();
+        produto.adicionarPerguntas(form.toModel(id, produtoRepository, logado));
+        produtoRepository.save(produto);
 
     }
+
+}
 
