@@ -1,4 +1,4 @@
-package br.com.leonardo.mercadolivre.dto;
+package br.com.leonardo.mercadolivre.dto.pergunta;
 
 import br.com.leonardo.mercadolivre.excecao.RegraNegocioException;
 import br.com.leonardo.mercadolivre.model.Pergunta;
