@@ -12,6 +12,7 @@ public class FotosProdutos {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Posi
     @NotNull(message = "Link")
     private String link;
 

@@ -127,10 +127,10 @@ public class TratamentoDeExcecao extends ResponseEntityExceptionHandler {
         if (fieldError.getCode().equals("Size")) {
             return fieldError.getDefaultMessage();
         }
-        if (fieldError.getCode().equals("Positivo")) {
+        if (fieldError.getCode().equals("Positive")) {
             return fieldError.getDefaultMessage();
         }
-        if (fieldError.getCode().equals("min")) {
+        if (fieldError.getCode().equals("max")) {
             return fieldError.getDefaultMessage();
         }
 
