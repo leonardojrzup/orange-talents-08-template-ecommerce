@@ -12,6 +12,7 @@ import br.com.leonardo.mercadolivre.repository.CaracteristicaRepository;
 import br.com.leonardo.mercadolivre.repository.CategoriaRepository;
 import br.com.leonardo.mercadolivre.repository.ProdutoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -23,6 +24,7 @@ import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @RestController
@@ -66,9 +68,15 @@ public class ProdutoController {
     public void adicionarOpiniao(@PathVariable("id") Long id, @RequestBody @Valid OpiniaoForm form) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Usuario logado = (Usuario) authentication.getPrincipal();
-        Produto produto = produtoRepository.findById(id).orElseThrow();
-        produto.adicionarOpiniao(form.toModel(id, produtoRepository, logado));
-        produtoRepository.save(produto);
+        Optional<Produto> produto = produtoRepository.findById(id);
+        if (produto.isEmpty()) {
+            throw new EmptyResultDataAccessException(1);
+        }else{
+            Produto produtoConfirmado = produto.get();
+            produtoConfirmado.adicionarOpiniao(form.toModel(id, produtoRepository, logado));
+            produtoRepository.save(produtoConfirmado);
+        }
+
     }
 
     @PostMapping
@@ -76,10 +84,15 @@ public class ProdutoController {
     public void adicionarPerguntas(@PathVariable("id") Long id, @RequestBody @Valid PerguntaForm form) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Usuario logado = (Usuario) authentication.getPrincipal();
-        Produto produto = produtoRepository.findById(id).orElseThrow();
-        produto.adicionarPerguntas(form.toModel(id, produtoRepository, logado));
-        produtoRepository.save(produto);
-        EnviarEmail.enviarEmailNovaPergunta(produto.getVendedor(),logado,produto);
+        Optional<Produto> produto = produtoRepository.findById(id);
+        if (produto.isEmpty()) {
+            throw new EmptyResultDataAccessException(1);
+        }else{
+           Produto produtoConfirmado = produto.get();
+            produtoConfirmado.adicionarPerguntas(form.toModel(id, produtoRepository, logado));
+            produtoRepository.save(produtoConfirmado);
+            EnviarEmail.enviarEmailNovaPergunta(produtoConfirmado.getVendedor(),logado,produtoConfirmado);
+        }
 
     }
 

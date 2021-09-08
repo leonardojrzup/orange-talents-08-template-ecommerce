@@ -1,13 +1,11 @@
 package br.com.leonardo.mercadolivre.model;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
+@Entity
 public class Pergunta {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

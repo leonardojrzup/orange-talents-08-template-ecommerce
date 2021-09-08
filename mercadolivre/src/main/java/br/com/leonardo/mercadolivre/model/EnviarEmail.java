@@ -8,8 +8,8 @@ public class EnviarEmail {
         System.out.println("De: " + comprador.getLogin().toString());
         System.out.println("Para: " + vendedor.getLogin().toString());
         System.out.println("_________________________________Text:_______________________________________");
-        System.out.println("Boa Tarde/Noite, " + vendedor.getLogin().toString()+ ". O usuário " + comprador.getLogin().toString()
-                + " cadastrou uma nova pergunta para o produto" + produto.getNome());
+        System.out.println("Olá, " + vendedor.getLogin().toString()+ ". O usuário " + comprador.getLogin().toString()
+                + " cadastrou uma nova pergunta para o produto: " + produto.getNome());
     }
 
 }

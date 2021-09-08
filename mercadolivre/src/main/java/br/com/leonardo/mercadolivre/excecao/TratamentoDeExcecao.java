@@ -1,6 +1,7 @@
 package br.com.leonardo.mercadolivre.excecao;
 
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -80,6 +81,14 @@ public class TratamentoDeExcecao extends ResponseEntityExceptionHandler {
         return erros;
     }
 
+    @ExceptionHandler(EmptyResultDataAccessException.class)
+    public ResponseEntity<Object> handleEmptyResultDataAccessException(EmptyResultDataAccessException ex,
+                                                                       WebRequest request) {
+        String msgUsuario = "Recurso Não Encontrado.";
+        String msgDesenvolvedor = ex.toString();
+        List<Erro> erros = Arrays.asList(new Erro(msgUsuario, msgDesenvolvedor));
+        return handleExceptionInternal(ex, erros, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
+    }
 
     private String tratarMensagemDeErroParaUsuario(FieldError fieldError) { //Basicamente pega a mensagem de erro que foi especificada na anotação e adiciona uma mensagem mais amigavél, deve ser alteradada caso a mensagem não seja inserida na anotação
         if (fieldError.getCode().equals("NotBlank")) {
