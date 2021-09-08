@@ -121,6 +121,9 @@ public class TratamentoDeExcecao extends ResponseEntityExceptionHandler {
         if (fieldError.getCode().equals("Positivo")) {
             return fieldError.getDefaultMessage();
         }
+        if (fieldError.getCode().equals("min")) {
+            return fieldError.getDefaultMessage();
+        }
 
         //System.out.println(fieldError.getCode());//fins de debug para confirmar o codigo dos erros que estão sendo retornados
         return fieldError.toString();

@@ -58,6 +58,10 @@ public class Produto {
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<FotosProdutos> fotos = new ArrayList<FotosProdutos>();
 
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Opiniao> opinioes;
+
+
     public Produto( String nome, BigDecimal valor, int quantidade, String descricao, Categoria categoria, List<CaracteristicaForm> caracteristicas, Usuario usuario) {
         this.nome = nome;
         this.valor = valor;
@@ -70,7 +74,6 @@ public class Produto {
                 .map(caracteristica -> caracteristica.toModel())
                 .collect(Collectors.toSet()));
     }
-
 
 
     @Deprecated
@@ -118,6 +121,10 @@ public class Produto {
         return fotos;
     }
 
+    public List<Opiniao> getOpinioes() {
+        return opinioes;
+    }
+
     public boolean pertenceAoUsuario(Usuario logado) {
             return this.vendedor.getId().equals(logado.getId());
         }
@@ -128,4 +135,10 @@ public class Produto {
         }
     });
     }
+
+    public void adicionarOpiniao(Opiniao opiniao){
+    this.opinioes.add(opiniao);
+
+    }
+
 }
