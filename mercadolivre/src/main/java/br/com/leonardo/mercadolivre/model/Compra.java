@@ -1,5 +1,7 @@
 package br.com.leonardo.mercadolivre.model;
 
+import org.springframework.web.util.UriComponentsBuilder;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
@@ -88,6 +90,12 @@ public class Compra {
 
     public GatewayCompra getGatewayCompra() {
         return gatewayCompra;
+    }
+
+
+    public String urlRedirecionamento(
+            UriComponentsBuilder uriComponentsBuilder) {
+        return this.gatewayCompra.criaUrlRetorno(this, uriComponentsBuilder);
     }
 
 

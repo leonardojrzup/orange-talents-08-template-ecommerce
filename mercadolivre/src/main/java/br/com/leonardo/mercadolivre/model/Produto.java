@@ -2,6 +2,7 @@ package br.com.leonardo.mercadolivre.model;
 
 import br.com.leonardo.mercadolivre.dto.caracteristica.CaracteristicaForm;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.util.Assert;
 
 import javax.persistence.*;
 import javax.validation.Valid;
@@ -155,6 +156,8 @@ public class Produto {
     }
 
     public Boolean AbaterEstoque(Integer quantidade){
+        if (quantidade < 1)
+            throw new IllegalArgumentException("O estoque do produto " + this.getNome() + " está zerado.");
         if (this.quantidade < quantidade){
             return false;
         }

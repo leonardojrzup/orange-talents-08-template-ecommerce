@@ -28,7 +28,7 @@ public class CompraController {
 
     private EnviarEmail enviar;
 
-    
+
 
 
     @PostMapping
@@ -41,22 +41,14 @@ public class CompraController {
             throw new EmptyResultDataAccessException(1);
         } else {
             Produto produtoConfirmado = produto.get();
-            if (produtoConfirmado.getQuantidade() < 1)
-                throw new IllegalArgumentException("O estoque do produto " + produtoConfirmado.getNome() + " está zerado.");
+
             Compra compra = request.toModel(produtoConfirmado, logado);
+
             if (produtoConfirmado.AbaterEstoque(request.getQuantidade())) {
                 produtoRepository.save(produtoConfirmado);
                 compraRepository.save(compra);
                 EnviarEmail.enviarEmailNovaCompra(produtoConfirmado.getVendedor(), logado, produtoConfirmado,request.getQuantidade());
-                if (compra.getGatewayCompra().equals(GatewayCompra.Paypal)) {
-                    String urlRedirect = uriComponentsBuilder.path("/retorno-pagseguro/{id}")
-                            .buildAndExpand(compra.getId().toString()).toString();
-                    return urlRedirect;
-                } else {
-                    String urlRedirect = uriComponentsBuilder.path("/retorno-paypal/{id}")
-                            .buildAndExpand(compra.getId().toString()).toString();
-                    return urlRedirect;
-                }
+                return compra.urlRedirecionamento(uriComponentsBuilder);
             } else {
                 throw new IllegalArgumentException("O estoque do produto " + produtoConfirmado.getNome() + " é menor que a quantidade na compra");
             }
