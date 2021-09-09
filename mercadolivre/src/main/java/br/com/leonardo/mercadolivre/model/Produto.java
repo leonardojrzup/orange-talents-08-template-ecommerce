@@ -1,6 +1,5 @@
 package br.com.leonardo.mercadolivre.model;
 
-import br.com.leonardo.mercadolivre.dto.FotosProdutos.FotosProdutosForm;
 import br.com.leonardo.mercadolivre.dto.caracteristica.CaracteristicaForm;
 import org.hibernate.validator.constraints.Length;
 
@@ -78,7 +77,6 @@ public class Produto {
                 .collect(Collectors.toSet()));
     }
 
-
     @Deprecated
     public Produto() {
 
@@ -150,6 +148,17 @@ public class Produto {
 
     public void adicionarPerguntas(Pergunta pergunta){
         this.perguntas.add(pergunta);
+
+    }
+
+    public Boolean AbaterEstoque(Integer quantidade){
+        if (this.quantidade < quantidade){
+            return false;
+        }
+        else{
+            this.quantidade = this.quantidade - quantidade;
+            return true;
+        }
 
     }
 
