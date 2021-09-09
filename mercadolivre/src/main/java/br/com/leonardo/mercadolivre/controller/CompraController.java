@@ -9,10 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.transaction.Transactional;
@@ -31,6 +28,9 @@ public class CompraController {
 
     private EnviarEmail enviar;
 
+    
+
+
     @PostMapping
     @Transactional
     public String cadastrarCompra(@RequestBody @Valid CompraForm request, UriComponentsBuilder uriComponentsBuilder) {
@@ -47,7 +47,7 @@ public class CompraController {
             if (produtoConfirmado.AbaterEstoque(request.getQuantidade())) {
                 produtoRepository.save(produtoConfirmado);
                 compraRepository.save(compra);
-                EnviarEmail.enviarEmailNovaCompra(produtoConfirmado.getVendedor(), logado, produtoConfirmado);
+                EnviarEmail.enviarEmailNovaCompra(produtoConfirmado.getVendedor(), logado, produtoConfirmado,request.getQuantidade());
                 if (compra.getGatewayCompra().equals(GatewayCompra.Paypal)) {
                     String urlRedirect = uriComponentsBuilder.path("/retorno-pagseguro/{id}")
                             .buildAndExpand(compra.getId().toString()).toString();

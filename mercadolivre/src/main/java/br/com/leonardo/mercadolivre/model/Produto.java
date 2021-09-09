@@ -130,6 +130,9 @@ public class Produto {
         return perguntas;
     }
 
+
+
+
     public boolean pertenceAoUsuario(Usuario logado) {
             return this.vendedor.getId().equals(logado.getId());
         }

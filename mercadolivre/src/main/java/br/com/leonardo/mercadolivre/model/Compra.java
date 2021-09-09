@@ -10,12 +10,12 @@ import java.util.Optional;
 
 @Entity
 public class Compra {
-    @javax.persistence.Id
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;
 
-    @Column(name = "Data")
-    private LocalDateTime data;
+
+    private LocalDateTime dataCompra;
 
     @ManyToOne
     @JoinColumn(name = "usuario", referencedColumnName = "id")
@@ -44,13 +44,18 @@ public class Compra {
 
     }
 
-    public Compra(Usuario cliente, Integer quantidade, Produto produto, BigDecimal valor, GatewayCompra gatewayCompra) {
+    public Compra(Usuario cliente, Integer quantidade, Produto produto, GatewayCompra gatewayCompra) {
         this.cliente = cliente;
         this.quantidade = quantidade;
-        this.status = status;
+        this.status = Status.INICIADA;
         this.produto = produto;
-        this.valor = valor;
+        this.valor = calcularValor(produto.getValor());
         this.gatewayCompra = gatewayCompra;
+        this.dataCompra = LocalDateTime.now();
+    }
+
+    private BigDecimal calcularValor(BigDecimal valor) {
+    return valor.multiply(BigDecimal.valueOf(quantidade));
     }
 
     public Long getId() {
@@ -58,7 +63,7 @@ public class Compra {
     }
 
     public LocalDateTime getData() {
-        return data;
+        return dataCompra;
     }
 
     public Usuario getCliente() {

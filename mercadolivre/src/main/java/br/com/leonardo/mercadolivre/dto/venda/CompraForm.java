@@ -16,7 +16,7 @@ public class CompraForm {
 
 
     @NotNull(message = "Quantidade")
-    @Positive(message = "Quantidade não pode ser negativa")
+    @Positive(message = "Quantidade deve ser maior que 1")
     private Integer quantidade;
 
     @NotNull(message = "Id pro produto")
@@ -46,7 +46,7 @@ public class CompraForm {
 
     public Compra toModel(Produto produto, Usuario usuario) {
         BigDecimal valor = produto.getValor() .multiply(BigDecimal.valueOf(this.quantidade));
-        return new Compra(usuario, quantidade, produto,   valor, gatewayCompra );
+        return new Compra(usuario, quantidade, produto, gatewayCompra );
     }
 
 }

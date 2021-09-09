@@ -13,14 +13,18 @@ public class EnviarEmail {
     }
 
 
-    public static void enviarEmailNovaCompra(Usuario vendedor, Usuario comprador,Produto produto){
+    public static void enviarEmailNovaCompra(Usuario vendedor, Usuario comprador,Produto produto, Integer quantidade){
 
         System.out.println("---------------------------------Email---------------------------------------");
         System.out.println("De: " + comprador.getLogin().toString());
         System.out.println("Para: " + vendedor.getLogin().toString());
         System.out.println("_________________________________Text:_______________________________________");
         System.out.println("Olá, " + vendedor.getLogin().toString()+ ". O usuário " + comprador.getLogin().toString()
-                + " iniciou a compra de "+ produto.getQuantidade() +" unidades do produto: " + produto.getNome());
+                + " iniciou a compra de "+ quantidade +" unidades do produto: " + produto.getNome());
+
+        System.out.println("______________________________________________________________________________");
+        System.out.println("Caso a compra seja finalizada restarão," + produto.getQuantidade() + " unidades do produto");
+
     }
 }
 

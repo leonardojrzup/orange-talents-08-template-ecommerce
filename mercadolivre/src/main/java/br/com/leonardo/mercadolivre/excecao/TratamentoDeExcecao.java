@@ -51,6 +51,15 @@ public class TratamentoDeExcecao extends ResponseEntityExceptionHandler {
         return handleExceptionInternal(ex, erros, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
 
+    //Tratar Argument
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<Object> handleRegraIllegalArgumentException(IllegalArgumentException ex, WebRequest request) {
+        String msgUsuario = ex.getMessage();
+        String msgDesenvolvedor = ex.getMessage();
+        List<Erro> erros = Arrays.asList(new Erro(msgUsuario, msgDesenvolvedor));
+        return handleExceptionInternal(ex, erros, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+    }
+
     @ExceptionHandler(ResponseStatusException.class)
     public ResponseEntity<Object> handleResponseStatusException(IllegalStateException ex, WebRequest request) {
         String msgUsuario = ex.getMessage();
