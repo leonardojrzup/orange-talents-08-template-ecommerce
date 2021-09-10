@@ -4,8 +4,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 public enum GatewayCompra {
 
-
-
     pagseguro {
         @Override
         String criaUrlRetorno(Compra compra,

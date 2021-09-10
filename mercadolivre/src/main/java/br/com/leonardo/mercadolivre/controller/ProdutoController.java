@@ -6,7 +6,7 @@ import br.com.leonardo.mercadolivre.dto.opiniao.OpiniaoForm;
 import br.com.leonardo.mercadolivre.dto.produto.ProdutoDTO;
 import br.com.leonardo.mercadolivre.dto.produto.DetalharProduto;
 import br.com.leonardo.mercadolivre.dto.produto.ProdutoForm;
-import br.com.leonardo.mercadolivre.model.EnviarEmail;
+import br.com.leonardo.mercadolivre.utils.EnviarEmail;
 import br.com.leonardo.mercadolivre.model.Produto;
 import br.com.leonardo.mercadolivre.model.Usuario;
 import br.com.leonardo.mercadolivre.repository.CategoriaRepository;

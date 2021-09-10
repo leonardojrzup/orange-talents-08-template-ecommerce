@@ -1,14 +1,22 @@
 package br.com.leonardo.mercadolivre.model;
 
+import apiexterna.ApiExterna;
+import apiexterna.dto.NfeForm;
+import apiexterna.dto.RankingForm;
+import br.com.leonardo.mercadolivre.model.enuns.Status;
+import br.com.leonardo.mercadolivre.model.enuns.StatusTransacao;
+import br.com.leonardo.mercadolivre.excecao.RegraNegocioException;
+import br.com.leonardo.mercadolivre.utils.EnviarEmail;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Optional;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 public class Compra {
@@ -39,6 +47,8 @@ public class Compra {
     @NotNull(message = "GatewayCompra")
     GatewayCompra gatewayCompra;
 
+    @OneToMany(mappedBy = "compra", cascade = CascadeType.MERGE)
+    private List<Transacao> transacoes = new ArrayList<>();
 
 
     @Deprecated
@@ -93,10 +103,39 @@ public class Compra {
     }
 
 
+
     public String urlRedirecionamento(
             UriComponentsBuilder uriComponentsBuilder) {
         return this.gatewayCompra.criaUrlRetorno(this, uriComponentsBuilder);
     }
+
+
+    public void adicionarTransacao(Transacao transacao, ApiExterna apiExterna) {
+        if (this.transacoes.contains(transacao)) {
+            throw new RegraNegocioException("Essa transação já aconteceu!");
+        }
+        List<Transacao> transacoesComSucesso = this.transacoes.stream().filter(transacao::concluidaComSucesso).collect(Collectors.toList());
+        if (transacoesComSucesso.size() == 1)
+            throw new RegraNegocioException("Essa compra ja possui uma transação de pagamento com sucesso!");
+
+            processarComunicacaoSistemasExternos(transacao,  apiExterna );
+
+        this.transacoes.add(transacao);
+
+
+    }
+
+    private void processarComunicacaoSistemasExternos(Transacao transacao, ApiExterna apiExterna ) {
+        if (transacao.getStatus().equals(StatusTransacao.SUCESSO)) {
+           apiExterna.comunicaSistemaNotaFiscal(new NfeForm(this.Id, this.cliente.getId()));
+           apiExterna.comunicaSistemaRanking(new RankingForm(this.Id, this.produto.getVendedor().getId()));
+            EnviarEmail.enviarEmailCompraSucesso(this.cliente, this.produto, this.quantidade);
+        }
+        else {
+            EnviarEmail.enviarEmailCompraFalhou(this.cliente, this.produto, this.quantidade, this.gatewayCompra.toString(),this.getId());
+        }
+    }
+
 
 
 }

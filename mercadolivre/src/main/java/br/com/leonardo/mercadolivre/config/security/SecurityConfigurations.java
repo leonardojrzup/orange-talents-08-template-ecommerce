@@ -47,6 +47,7 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers(HttpMethod.POST, "/auth").permitAll()
                 .antMatchers(HttpMethod.POST, "/usuarios").permitAll() // permitir que eu possa cadastrar um usuario para realizar a autenticação depois, banco H
+                .antMatchers(HttpMethod.POST, "/api-externa/**").permitAll()
                 .anyRequest().authenticated()
                 .and().csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // nao criar sessao

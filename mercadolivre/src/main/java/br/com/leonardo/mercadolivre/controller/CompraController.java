@@ -5,6 +5,7 @@ import br.com.leonardo.mercadolivre.dto.venda.CompraForm;
 import br.com.leonardo.mercadolivre.model.*;
 import br.com.leonardo.mercadolivre.repository.CompraRepository;
 import br.com.leonardo.mercadolivre.repository.ProdutoRepository;
+import br.com.leonardo.mercadolivre.utils.EnviarEmail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.security.core.Authentication;
